@@ -15,7 +15,7 @@ void setter_front(char *main, char *side,int i_p, int j_p);
 int main () {
     char arr_main[N+1] = {0};
     char arr_buffer[N+1] = {0};
-    char i[] = "1231.29328743982749825";
+    char i[] = "1231.99328743982749825";
     char j[] = "9000.3456832942837432";
     int i_p;
     int j_p;
@@ -52,7 +52,7 @@ void format(char *main, char *side, int *i_p, int *j_p) {
 
     
 
-    for (int y =0; y < strlen(main); y++){ //finds index of decimal for main
+    for (int y =0; y <= i; y++){ //finds index of decimal for main
         printf("%d\n", y);
         if (main[y] == '.') {
             *i_p = y;
@@ -60,7 +60,7 @@ void format(char *main, char *side, int *i_p, int *j_p) {
         }
     }
 
-    for (int z= 0; z < strlen(side); z++) { //finds index of decimal for side
+    for (int z= 0; z <= j; z++) { //finds index of decimal for side
         if (side[z] == '.') {
             *j_p = z;
             break;
@@ -105,8 +105,6 @@ void inverse(char *target) {
 }
 
 void big_add(char *main, char *side, int i_p, int j_p) {
-    int a;
-    int b;
     int sum = 0;
     char temp[N] = {0};
     int len = strlen(main);
@@ -114,11 +112,9 @@ void big_add(char *main, char *side, int i_p, int j_p) {
 
     for (int i = 0; i < len; i++) {
         printf("\n%c | %c\n", main[i], side[i]);
-        a = main[i]-'0';
-        b = side[i]-'0';
         //printf("sum: %d", sum);
         if (main[i] != '.' && side[i] != '.'){
-            sum = a + b;
+            sum = (main[i]-'0') + (side[i]-'0');
             if (sum > 9) {
                 temp_nbr =  sum/10;
                 temp[i+1] += temp_nbr;
@@ -128,6 +124,7 @@ void big_add(char *main, char *side, int i_p, int j_p) {
                 temp[i] += sum+'0';
             }
         } else {
+            temp[i+1] = temp[i]%10;
             temp[i] = '.';
         }
         printf("%c", temp[i]);
