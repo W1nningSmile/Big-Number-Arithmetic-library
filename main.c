@@ -83,7 +83,7 @@ void inverse(char *target) {
 
 void big_add(char *main, char *side) {
     int sum = 0;
-    char temp[N] = {'0'};
+    char temp[N] = {0};
     int len = strlen(main);
     int temp_nbr;
     int i_p;
