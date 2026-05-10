@@ -8,6 +8,7 @@
 ## Next Features
 - [ ] Implement big multiplication
 - [ ] Implement division
+- [ ] Turn into library(add header file, etc...)
 - [ ] Add benchmarking system
 
 ## Optimizations
