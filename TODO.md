@@ -2,7 +2,7 @@
 
 ## Current Issues
 - [X] Fix carry propagation bugs in big_add
-- [ ] Remove string reversing (performance issue)
+- [x] Remove string reversing (performance issue)
 - [ ] Replace ASCII storage with integer digits 
 
 ## Next Features
@@ -10,6 +10,7 @@
 - [ ] Implement division
 - [ ] Turn into library(add header file, etc...)
 - [ ] Add benchmarking system
+- [ ] Add an option to clean up the output(removing extra 0s, etc...)
 
 ## Optimizations
 - [ ] Switch to base 10^9 storage / switch to uint_32t or uint_64t
