@@ -5,40 +5,27 @@
 #define N 1000
 
 void format(char *main, char *side, int *i_p, int *j_p); //rework it hard
-void inverse(char *target); //fixed it. works well now
-void big_add(char *main, char *side,int i_p, int j_p);
+void big_add(char *main, char *side);
 void setter_front(char *main, char *side,int i_p, int j_p);
-
-//need to invert numbers
+void initialize(char **i, char **j, char *arr_main, char *arr_buffer);
+int find_dot_index(char *target);
 
 
 int main () {
+    char i[] = "123.456"; //put numbers here
+    char j[] = "0.544";
+
+    char *pi = i;
+    char *pj = j;
+
     char arr_main[N+1] = {0};
     char arr_buffer[N+1] = {0};
-    char i[] = "1231.99328743982749825";
-    char j[] = "9000.3456832942837432";
-    int i_p;
-    int j_p;
 
-    int main_len;
-    int buff_len;
+    initialize(&pi, &pj, arr_main, arr_buffer); 
 
-    strncpy(arr_main, i, N-1);
-    strncpy(arr_buffer, j, N-1);
+    printf("\nmain: %s\nbuffer: %s", pi, pj);
 
-    main_len = strlen(arr_main);
-    buff_len = strlen(arr_buffer);
-
-
-    if (main_len >= buff_len) {
-        format(arr_main,arr_buffer, &i_p, &j_p);
-    } else if (main_len < buff_len) {
-        format(arr_buffer,arr_main, &j_p, &i_p);
-    }
-
-    printf("\nmain: %s\nbuffer: %s", arr_main, arr_buffer);
-
-    big_add(arr_main, arr_buffer, i_p, j_p);
+    big_add(pj, pi);
 }
 
 void format(char *main, char *side, int *i_p, int *j_p) {
@@ -50,22 +37,8 @@ void format(char *main, char *side, int *i_p, int *j_p) {
     int diff_unit;
 
 
-    
-
-    for (int y =0; y <= i; y++){ //finds index of decimal for main
-        printf("%d\n", y);
-        if (main[y] == '.') {
-            *i_p = y;
-            break;
-        }
-    }
-
-    for (int z= 0; z <= j; z++) { //finds index of decimal for side
-        if (side[z] == '.') {
-            *j_p = z;
-            break;
-        }
-    }
+    *i_p = find_dot_index(main); //finds index of decimal for main
+    *j_p = find_dot_index(side); //finds index of decimal for side
 
     after_main = strlen(main) - *i_p -1;
     after_side = strlen(side) -*j_p -1;
@@ -73,64 +46,63 @@ void format(char *main, char *side, int *i_p, int *j_p) {
     diff_unit = *i_p-*j_p; //gives diff in numbers before decimal
 
 
-    for (int x = 0; x < N; x++) {
-        if (side[x + *j_p] == '\0' && main[x + *i_p] != '\0') {
-            side[x+*j_p] = '0';
-        } else if(main[x] == '\0') {
-            break;
-        } 
+    if (after_side < after_main) {
+        int new_len = *j_p + 1 + after_main; //check index of new dot
+        for (int x = after_side; x < after_main; x++) {
+            side[*j_p + 1 + x] = '0'; 
+        }
+        side[new_len] = '\0';
+    } else if (after_side > after_main) {
+        int new_len = *i_p + 1 + after_side; //check index of new dot
+        for (int x = after_main; x < after_side; x++) {
+            main[*i_p + 1 + x] = '0'; 
+        }
+        main[new_len] = '\0';
     }
 
     setter_front(main, side, *i_p, *j_p);
 
-    inverse(main);
-    inverse(side);
+    printf("Formating done");
         
     
 
     //make a for loop going from i = decimal place to 0 and doing basic addition 
 }
 
-void inverse(char *target) {
-    char temp[N];
-    int length_arr = strlen(target)-1;
-    printf("length_arr:%d\n", length_arr);
 
-    for (int i = 0; i <= length_arr;i++) {
-        temp[length_arr-i] = target[i];
-        //printf("%c | %d\n", target[length_arr-i], (length_arr-i));
-    }
-    temp[length_arr+1] = '\0';
-    strcpy(target, temp);
-}
-
-void big_add(char *main, char *side, int i_p, int j_p) {
+void big_add(char *main, char *side) {
     int sum = 0;
     char temp[N] = {0};
     int len = strlen(main);
     int temp_nbr;
+    int i_p;
+    int j_p;
 
-    for (int i = 0; i < len; i++) {
-        printf("\n%c | %c\n", main[i], side[i]);
-        //printf("sum: %d", sum);
-        if (main[i] != '.' && side[i] != '.'){
-            sum = (main[i]-'0') + (side[i]-'0');
+    i_p = find_dot_index(main); //finds index of decimal for main
+    j_p = find_dot_index(side); //finds index of decimal for side (from reverse number)
+    printf("\ni_p : %d\nj_p : %d\n", i_p, j_p);
+
+
+    for (int i = len; i >= 0; i--) {
+        if (i != i_p){
+            sum = (main[i]-'0') + (side[i]-'0') + temp[i];
+            printf("SUMSUM: %d\n", sum);
             if (sum > 9) {
-                temp_nbr =  sum/10;
-                temp[i+1] += temp_nbr;
-                temp[i] += sum%10 + '0';
-                printf("\n\ncarry over %d | %d | %d\n\n", temp_nbr, sum, temp[i]);
+                temp_nbr =  sum/10; //remove this later
+                temp[i-1] += temp_nbr; 
+                temp[i] = sum%10 + '0';
+                printf("\n\ntemp_nbr: %d | sum: %d | temp[i+1] : %c | temp[i] : %c\n\n",
+                     temp_nbr, sum, temp[i+1], temp[i]);
             } else {
-                temp[i] += sum+'0';
+                temp[i] = sum+'0';
             }
-        } else {
-            temp[i+1] = temp[i]%10;
+        } else { //dot logic
+            temp[i-1] += (temp[i]);
             temp[i] = '.';
         }
-        printf("%c", temp[i]);
+
     }
     temp[len] = '\0';
-    inverse(temp);
     printf("\n\ntemp: %s", temp);
 }
 
@@ -142,7 +114,7 @@ void setter_front(char *main, char *side,int i_p, int j_p) {
         printf("len : %d", diff);
         memmove(side+diff, side, len +1); //+1 is for \0
 
-        for (int i =0; i < diff+1; i++) {
+        for (int i =0; i < diff; i++) {
             side[i] = '0';
         }
     } else if (diff < 0) { //i_p + diff + 1 and j_p + 1 ->shifts left
@@ -150,7 +122,7 @@ void setter_front(char *main, char *side,int i_p, int j_p) {
         diff = -diff;
         memmove(main+diff, main, len +1); //+1 is for \0
 
-        for (int i =0; i < -diff+1; i++) {
+        for (int i =0; i < diff+1; i++) {
             main[i] = '0';
         }
     }
@@ -164,4 +136,49 @@ void setter_front(char *main, char *side,int i_p, int j_p) {
     main[0] = '0';
     side[0] = '0'; //need to add extra buffer just in case. otherwise may overflow
     printf("\n\n\n\n\n\n%s\n%s\n\n", main, side);
+}
+
+void initialize(char **i, char **j,  char *arr_main, char *arr_buffer) {
+    //char arr_main[N+1] = {0};
+    //char arr_buffer[N+1] = {0};
+
+    int i_p;
+    int j_p;
+
+    int main_len;
+    int buff_len;
+
+    //char i[] = "1231.99328743982749825";
+    //char j[] = "9000.3456832942837432";
+
+    strncpy(arr_main, *i, N-1);
+    strncpy(arr_buffer, *j, N-1);
+
+    main_len = strlen(arr_main);
+    buff_len = strlen(arr_buffer);
+
+    if (main_len >= buff_len) {
+        format(arr_main,arr_buffer, &i_p, &j_p);
+    } else if (main_len < buff_len) {
+        format(arr_buffer,arr_main, &j_p, &i_p);
+    }
+
+    *i = arr_main; 
+    *j = arr_buffer;
+    printf("\n\nstring transfer: %s\n%s\n\nstring transfer2: %s\n%s\n\n", arr_main, i, arr_buffer, j);
+}
+
+int find_dot_index(char *target) {
+    int p;
+    int i = strlen(target)-1;
+
+    for (int y =0; y <= i; y++){ //finds index of decimal for main
+        printf("%d\n", y);
+        if (target[y] == '.') {
+            return y;
+        }
+
+    }
+    target[i+1] = '.';
+    return (i+1);
 }
