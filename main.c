@@ -12,8 +12,8 @@ int find_dot_index(char *target);
 
 
 int main () {
-    char i[] = "123"; //put numbers here
-    char j[] = ".877";
+    char i[] = "123.456"; //put numbers here
+    char j[] = "0.544";
 
     char *pi = i;
     char *pj = j;
@@ -84,10 +84,9 @@ void big_add(char *main, char *side) {
 
 
     for (int i = len; i >= 0; i--) {
-        printf("\n%c || %c\n", main[i], side[i]);
         if (i != i_p){
             sum = (main[i]-'0') + (side[i]-'0') + temp[i];
-            printf("SUMSUM: %d\ntemp[i] = %c\n\n%c + %c", sum, temp[i], main[i]-'0', side[i]-'0');
+            printf("SUMSUM: %d\n", sum);
             if (sum > 9) {
                 temp_nbr =  sum/10; //remove this later
                 temp[i-1] += temp_nbr; 
@@ -98,7 +97,7 @@ void big_add(char *main, char *side) {
                 temp[i] = sum+'0';
             }
         } else { //dot logic
-            temp[i-1] = (temp[i]);
+            temp[i-1] += (temp[i]);
             temp[i] = '.';
         }
 
