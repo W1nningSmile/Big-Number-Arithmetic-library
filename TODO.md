@@ -1,12 +1,13 @@
 # Big Number Library Roadmap
 
 ## Current Issues
+- [ ] **Properly organize code using modular programming**
 - [X] Fix carry propagation bugs in big_add
 - [x] Remove string reversing (performance issue)
 - [ ] switch to dynamic memory
 - [ ] Replace ASCII storage with integer digits
 
-> Will need a full rewrite for the last 2 in "Current Issues"
+> Best to do a full rewrite for the rest of the problems in "Current Issues"
 
 ## Next Features
 - [ ] Implement big multiplication
