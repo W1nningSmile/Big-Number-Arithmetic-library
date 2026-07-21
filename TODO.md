@@ -3,7 +3,10 @@
 ## Current Issues
 - [X] Fix carry propagation bugs in big_add
 - [x] Remove string reversing (performance issue)
-- [ ] Replace ASCII storage with integer digits 
+- [ ] switch to dynamic memory
+- [ ] Replace ASCII storage with integer digits
+
+> Will need a full rewrite for the last 2 in "Current Issues"
 
 ## Next Features
 - [ ] Implement big multiplication
