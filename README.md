@@ -1,7 +1,10 @@
-# Big-Number-Arithmetic-library
+# Big-Number-Arithmetic-library (WIP)
 A library that can do arithmetic on numbers larger than the CPU's native register size (typically 64-bit), with support for decimal values. 
 
-**Status:** Work in Progress
+## Development Status
+
+This project was paused while I worked on a larger application.
+I am now returning to it with new experience and plans to improve its design, add features, and continue development.
 
 ## Motivation
 Standard floating-point types introduce size limitations.
@@ -26,3 +29,4 @@ Addition is done digit-by-digit with manual carry handling, including correct pr
 ## Challenges
   - Alligning numbers with different lengths and decimal places
   - Avoiding buffer overflow during memory shifts and carry propagation
+
