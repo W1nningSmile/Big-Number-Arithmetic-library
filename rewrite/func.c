@@ -57,11 +57,13 @@ int *chunk_creation(int chunk_count, int *len, char *buffer) {
     int *arr = malloc(chunk_count*sizeof(int));
 
     for(int i = 0; i < chunk_count; i++) {
+        printf("yo\n");
         int temp = 0;
+        int str_index;
         for (int j = 0; j < 9; j++){
-            int str_index = i * 9 + j;
+            str_index = i * 9 + j;
 
-            if (str_index < (*len)) {
+            if (str_index < (*len)-1) {
                 temp = (temp * 10) + ((buffer)[str_index] - '0');
 
             } else {
@@ -69,7 +71,7 @@ int *chunk_creation(int chunk_count, int *len, char *buffer) {
 
             }
         }
-        printf("temp is: %d\n", temp);
+        printf("temp is: %d\nnext: %d\n", temp, (buffer)[str_index] - '0');
         arr[i] = temp;
     }
 
@@ -92,11 +94,11 @@ int *chunk_creation(int chunk_count, int *len, char *buffer) {
 
     printf("Your final array is: ");
 
-    for (int i = 0; i < chunk_count-1; i++){
+    for (int i = 0; i < chunk_count; i++){
         printf("%d", arr[i]);
     }
 
-    printf("%d", arr[chunk_count-1]/expo(9-((*len)-2)%9)); // -1 for \0 and another -1 bc expo increase power by 1
+    //printf("%d", arr[chunk_count-1]/expo(9-((*len)-2)%9)); // -1 for \0 and another -1 bc expo increase power by 1
 
     return arr;
 }
