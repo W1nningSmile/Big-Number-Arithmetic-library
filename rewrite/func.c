@@ -3,6 +3,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <math.h>
+
 
 void resize(char **arr, int *size) {
     char *temp = realloc(*arr, (*size));
@@ -19,6 +21,11 @@ void resize(char **arr, int *size) {
 char *get_line(int *len) {
     int size = 32;
     char *buffer = malloc(size);
+
+    if (arr == NULL) {
+        printf("\n\nOut of memory.");
+        exit();
+    }
 
     printf("enter: ");
 
@@ -53,52 +60,36 @@ int expo(int power) {
     return temp;
 }
 
-int *chunk_creation(int chunk_count, int *len, char *buffer) {
-    int *arr = malloc(chunk_count*sizeof(int));
+int *chunk_creation(int len, char *buffer) {
+    int chunk_count = ((len-2) / 9)+1;
+    int *arr = malloc(chunk_count*sizeof(buffer));
 
-    for(int i = 0; i < chunk_count; i++) {
-        printf("yo\n");
-        int temp = 0;
-        int str_index;
-        for (int j = 0; j < 9; j++){
-            str_index = i * 9 + j;
+    if (arr == NULL) {
+        printf("\n\nOut of memory.");
+        exit();
+    }
 
-            if (str_index < (*len)-1) {
-                temp = (temp * 10) + ((buffer)[str_index] - '0');
+    int index = len -2;
+    int chunk_index = 0;
 
-            } else {
-                break;
+    while (index >= 0) {
+        int chunk = 0;
+        int mult = 1;
 
-            }
+        for (int i = 0; i < 9 && index >= 0; i++) {
+            chunk += (buffer[index] - '0') * mult;
+
+            mult *= 10;
+            index--;
+            printf("%d\n", chunk);
         }
-        printf("temp is: %d\nnext: %d\n", temp, (buffer)[str_index] - '0');
-        arr[i] = temp;
+        arr[chunk_index] = chunk;
+        chunk_index++;
     }
 
-    if (chunk_count > 1) {
-        int temp2 = 0;
-
-        for (int i =0; i < ((*len)-1)%9; i++) {
-            printf("%d\n", ((buffer)[i + 9*((*len)/9)] - '0') * expo((9-i)));
-            temp2 += ((buffer)[i + 9*((*len)/9)] - '0') * expo(9-i);
-            printf("T: %d\n", temp2);
-        }
-        printf("temp 2 is: %d\n", temp2);
-        arr[chunk_count-1] = temp2;
-    }
-    
-
-    for (int i = 0; i < chunk_count; i++){
-        printf("the final chunk(s) are: %d\n", arr[i]);
+    for (int i = 0; i < chunk_count; i++) {
+        printf("yp: %d\n", arr[i]);
     }
 
-    printf("Your final array is: ");
 
-    for (int i = 0; i < chunk_count; i++){
-        printf("%d", arr[i]);
-    }
-
-    //printf("%d", arr[chunk_count-1]/expo(9-((*len)-2)%9)); // -1 for \0 and another -1 bc expo increase power by 1
-
-    return arr;
 }
