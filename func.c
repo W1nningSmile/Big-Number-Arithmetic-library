@@ -112,40 +112,71 @@ int *resize_int(int *arr, int size) {
     return temp;
 }
 
-Big_int *add(Big_int *num1, Big_int *num2) {
-    int len_diff = (num1->chunk_count)-(num2->chunk_count);
-    printf("predone, %d | %d vs %d\n", len_diff, num1->chunk_count, num2->chunk_count);
+void align_chunks(Big_int **num1, Big_int **num2) { //takes 2 big_int and adds empty chunks to the smaller one so both numbers have equal chunk amounts
+    //align_chunk ensures that:
+    //1. both numbers have the same amount of chunks
+    //2. both numbers recieve an extra chunk as padding(need to increase the padding for mulitplication though)
 
-    printf("num1 arr: %p\n", (void *)num1->arr);
-    printf("num2 arr: %p\n", (void *)num2->arr);
-    printf("size: %zu\n", num2->len * sizeof(*num2->arr));
+    int len_diff = ((*num1)->chunk_count)-((*num2)->chunk_count);
 
     if (len_diff > 0) {
-        num2->arr = resize_int(num2->arr, (num1->len)*sizeof(*num2->arr));
-        printf("H: %d, %d, %d\n", num2->len, (num2->len) * sizeof(int), len_diff);
+        (*num2)->arr = resize_int((*num2)->arr, ((*num1)->chunk_count)*sizeof(*(*num2)->arr));
+        printf("H: %d, %d, %d\n", (*num2)->len, ((*num2)->len) * sizeof(int), len_diff);
         //memmove(&(num2->arr)[len_diff], &(num2->arr)[0], sizeof(int)*num2->chunk_count);
 
         for (int i = 0; i < len_diff; i++) {
-            (num2->arr)[num2->chunk_count + i] = 0;
+            ((*num2)->arr)[(*num2)->chunk_count + i] = 0;
         }
 
-        for (int i = 0; i < num1->chunk_count; i++) {
-            printf("hi: %d, %d\n", (num1->arr)[i], (num2->arr)[i]);
-        }
+        (*num2)->chunk_count += len_diff;
     } else if (len_diff < 0) {
-        num1->arr = resize_int(num1->arr, (num2->len)*sizeof(*num2->arr));
+        (*num1)->arr = resize_int((*num1)->arr, ((*num2)->chunk_count)*sizeof(*(*num2)->arr));
         //memmove(&(num1->arr)[-len_diff], &(num1->arr)[0], sizeof(int)*num1->chunk_count);
 
-        for (int i = 0; i < len_diff; i++) {
-            (num1->arr)[num1->chunk_count + i] = 0;
+        for (int i = 0; i < -len_diff; i++) {
+            ((*num1)->arr)[(*num1)->chunk_count + i] = 0;
         }
 
-        for (int i = 0; i < num2->chunk_count; i++) {
-            printf("hi: %d, %d\n", (num1->arr)[i], (num2->arr)[i]);
-        }
-    } else {
-        
+        (*num1)->chunk_count -= len_diff;
+    } 
+    (*num1)->arr = resize_int((*num1)->arr, ((*num2)->chunk_count)*sizeof(*(*num2)->arr));
+    (*num2)->arr = resize_int((*num2)->arr, ((*num1)->chunk_count)*sizeof(*(*num2)->arr));
+
+    for (int i = 0; i < 1; i++) {
+        ((*num1)->arr)[(*num1)->chunk_count + i] = 0;
+        ((*num2)->arr)[(*num2)->chunk_count + i] = 0;
     }
+
+    (*num2)->chunk_count += 1;
+    (*num1)->chunk_count += 1;
+    
+    
+    
     printf("done\n");
+}
+
+Big_int *add(Big_int *num1, Big_int *num2) {
+    align_chunks(&num1, &num2);
+
+    for (int i = 0; i < num2->chunk_count; i++) {
+        printf("hgggi: %d (%d), %d (%d)\n", (num2->arr)[i], num2->chunk_count, (num1->arr)[i], num1->chunk_count); 
+    }
+
+    int sum[num1->chunk_count];
+    int carry = 0;
+
+    for (int i =0; i< num1->chunk_count; i++) {
+        unsigned long long int temp_sum = 0; //use same thing for multiplication 
+        temp_sum = (num1->arr)[i] + (num2->arr)[i] + carry;
+
+        carry = temp_sum / 1000000000;
+        sum[i] = temp_sum % 1000000000;
+        printf("sum(%d) is %d | temp_sum %llu | carry %d\n", i, sum[i], temp_sum, carry);
+    }
+
+    printf("sum: ");
+    for (int i = num1->chunk_count-1; i >= 0; i--) {
+        printf("%d | ", sum[i]);
+    }
 
 }
