@@ -33,6 +33,6 @@ Addition is done one chunk at a time with manual carry handling.
   - Trying to keep the library easy to use for the user while not hindering performance
   - Keeping track of all the necessary variables while keeping the usage of memory relatively low
 
-##Goals
+## Goals
 
 The long-term goal is to build a functional arbitrary-precision arithmetic library from the ground up in C while gaining a deeper understanding of memory management, dynamic data structures, numerical representation, and low-level arithmetic.
