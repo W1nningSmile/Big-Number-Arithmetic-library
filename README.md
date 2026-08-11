@@ -1,18 +1,22 @@
 # Big-Number-Arithmetic-library (WIP)
-A library that can do arithmetic on integers larger than the CPU's native register size (typically 64-bit), with support for decimal values. 
+A C library for performing arithmetic on integers larger than the CPU's native integer types, while maintaining exact precision.
 
 ## Development Status
 
-This project was paused while I worked on a larger application.
-I am now returning to it with new experience and plans to improve its design, add features, and continue development.
+This project is currently a work in progress.
+
+Development was temporarily paused while I worked on a larger application. I am now returning to the project with additional experience and plans to improve its design, add new operations, and continue development.
 
 ## Motivation
-C data types have a size limit to them and I wish to go past this limitation.
+C's built-in integer types are limited by their fixed sizes. This project explores how arbitrarily large integers can be represented and manipulated in C without relying on the CPU's native integer limits.
+
 This project aims to explore how large numerical values can be used while keeping perfect precision, similar to how libraries like the GNU Multiple Precision Arithmetic library work internally.
 
 ## How it works
 
-Numbers are currently represented as a 9 digit chunks in an array.
+Numbers are currently represented as a 9 digit chunks.
+
+EX: 1'234'567'895 -> [234567895, 1]
 
 Addition is done one chunk at a time with manual carry handling.
 
@@ -28,3 +32,7 @@ Addition is done one chunk at a time with manual carry handling.
   - Balancing memory usage, safety and speed while manipulating big integer
   - Trying to keep the library easy to use for the user while not hindering performance
   - Keeping track of all the necessary variables while keeping the usage of memory relatively low
+
+##Goals
+
+The long-term goal is to build a functional arbitrary-precision arithmetic library from the ground up in C while gaining a deeper understanding of memory management, dynamic data structures, numerical representation, and low-level arithmetic.
