@@ -1,32 +1,38 @@
 # Big-Number-Arithmetic-library (WIP)
-A library that can do arithmetic on numbers larger than the CPU's native register size (typically 64-bit), with support for decimal values. 
+A C library for performing arithmetic on integers larger than the CPU's native integer types, while maintaining exact precision.
 
 ## Development Status
 
-This project was paused while I worked on a larger application.
-I am now returning to it with new experience and plans to improve its design, add features, and continue development.
+This project is currently a work in progress.
+
+Development was temporarily paused while I worked on a larger application. I am now returning to the project with additional experience and plans to improve its design, add new operations, and continue development.
 
 ## Motivation
-Standard floating-point types introduce size limitations.
+C's built-in integer types are limited by their fixed sizes. This project explores how arbitrarily large integers can be represented and manipulated in C without relying on the CPU's native integer limits.
+
 This project aims to explore how large numerical values can be used while keeping perfect precision, similar to how libraries like the GNU Multiple Precision Arithmetic library work internally.
 
 ## How it works
 
-Numbers are currently represented as a character array and normalized one at a time before computation:
+Numbers are currently represented as a 9 digit chunks.
 
-  - Decimal points are aligned between 2 numbers
-  - Numbers are padded with 0s where needed
-  - Strings are reversed to allow right to left addition
+EX: 1'234'567'895 -> [234567895, 1]
 
-Addition is done digit-by-digit with manual carry handling, including correct propagation accross the decimal boundary.
+Addition is done one chunk at a time with manual carry handling.
 
 
 ## Future implementation
-  - Implementation of subtraction, multiplication, division, exponential and factorial
-  - Transitioning form strings to digital arrays representation for efficiency
-  - Optimisation memory usage, speed and performance
+  - [ ] Implementation of subtraction, multiplication, division, exponential and factorial
+  - [x] Transitioning form strings to digital arrays representation for efficiency
+  - [ ] Optimisation memory usage, speed and performance
+  - [ ] Add the option to use floating point numbers
 
 ## Challenges
   - Alligning numbers with different lengths and decimal places
-  - Avoiding buffer overflow during memory shifts and carry propagation
+  - Balancing memory usage, safety and speed while manipulating big integer
+  - Trying to keep the library easy to use for the user while not hindering performance
+  - Keeping track of all the necessary variables while keeping the usage of memory relatively low
 
+## Goals
+
+The long-term goal is to build a functional arbitrary-precision arithmetic library from the ground up in C while gaining a deeper understanding of memory management, dynamic data structures, numerical representation, and low-level arithmetic.

@@ -1,27 +1,10 @@
-# Big Number Library Roadmap
+# Big Number Library Rewrite Checklist
 
 ## Current Issues
-- [ ] **Properly organize code using modular programming**
-- [X] Fix carry propagation bugs in big_add
-- [x] Remove string reversing (performance issue)
-- [ ] switch to dynamic memory
-- [ ] Replace ASCII storage with integer digits
+- [ ] Test the addition function for edge cases and optimise
+- [ ] Clean up and optimise current memory usage
 
-> Best to do a full rewrite for the rest of the problems in "Current Issues"
-
-## Next Features
-- [ ] Implement big multiplication
-- [ ] Implement division
-- [ ] Turn into library(add header file, etc...)
-- [ ] Add benchmarking system
-- [ ] Add an option to clean up the output(removing extra 0s, etc...)
-
-## Optimizations
-- [ ] Switch to base 10^9 storage / switch to uint_32t or uint_64t
-- [ ] Reduce memory copying in format()
-- [ ] Avoid repeated strlen calls
-
-## Ideas (not started)
-- [ ] Karatsuba multiplication
-- [ ] FFT multiplication
-- [ ] File-based big integers (disk storage)
+## Fixed
+- [x] Seperate the chunk converter into its own functiona and put it into func.c/func.h
+- [x] Fix the bug where number lengths in multiples of 9 create an extra chunk
+- [x] Store data in structs to make it easier to use (added a function that does the set up of a Big int for you)
