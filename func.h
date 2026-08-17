@@ -5,6 +5,7 @@ typedef struct {
     int len;
     int point_index;
     int chunk_count;
+    int is_negative; //bool
 
     char *buffer;
     int *arr;
@@ -14,6 +15,7 @@ char *get_line(int *len);
 int *chunk_creation(int len, char *buffer,  int *nbr_chunk);
 Big_int *create(void);
 Big_int *add(Big_int *num1, Big_int *num2);
+Big_int *sub(Big_int *num1, Big_int *num2);
 
 //#define CREATE {malloc(sizeof(Big_int)), .len = 0} //<-- very neet trick (called "Macro Initializing": https://stackoverflow.com/questions/53847326/initializing-structure-using-macros)
 

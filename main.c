@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <math.h>
 
 #include "func.h"
 
@@ -39,5 +38,11 @@ void test2() {
     num2->arr = chunk_creation(num2->len, num2->buffer, &num2->chunk_count);
 
     printf("here\n");
-    add(num, num2);
+    sub(num, num2);
+    printf("\n");
+
+    //for (int i =0; i < num2->chunk_count; i++) {
+    //    printf("%d  ", (num2->arr)[i]);
+    //}
+
 }

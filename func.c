@@ -138,16 +138,19 @@ void align_chunks(Big_int *num1, Big_int *num2) { //takes 2 big_int and adds emp
 
         (num1)->chunk_count -= len_diff;
     } 
-    (num1)->arr = resize_int((num1)->arr, ((num2)->chunk_count)*sizeof(*(num2)->arr));
-    (num2)->arr = resize_int((num2)->arr, ((num1)->chunk_count)*sizeof(*(num2)->arr));
 
-    for (int i = 0; i < 1; i++) {
-        ((num1)->arr)[(num1)->chunk_count + i] = 0;
-        ((num2)->arr)[(num2)->chunk_count + i] = 0;
+    if (num1->chunk_count <= ((num1->len)-1)/9 + 1 && num2->chunk_count <= ((num1->len)-1)/9 + 1) {
+        (num1)->arr = resize_int((num1)->arr, ((num2)->chunk_count)*sizeof(*(num2)->arr));
+        (num2)->arr = resize_int((num2)->arr, ((num1)->chunk_count)*sizeof(*(num2)->arr));
+
+        for (int i = 0; i < 1; i++) {
+            ((num1)->arr)[(num1)->chunk_count + i] = 0;
+            ((num2)->arr)[(num2)->chunk_count + i] = 0;
+        }
+
+        (num2)->chunk_count += 1;
+        (num1)->chunk_count += 1;
     }
-
-    (num2)->chunk_count += 1;
-    (num1)->chunk_count += 1;
     
     
     
@@ -177,6 +180,65 @@ Big_int *add(Big_int *num1, Big_int *num2) {
         sum[i] = temp_sum % 1000000000;
         printf("sum(%d) is %d | temp_sum %llu | carry %d\n", i, sum[i], temp_sum, carry);
     }
+
+    printf("sum: %d", sum[num1->chunk_count-1]);
+    for (int i = num1->chunk_count-2; i >= 0; i--) {
+        printf(" | %09d", sum[i]); //neat trick that forces padding with leading zeros (https://stackoverflow.com/questions/33323384/printing-0-as-000-in-c-i-e-print-decimal-to-3-digit)
+    }
+
+}
+
+Big_int *sub(Big_int *num1, Big_int *num2) {
+    align_chunks(num1, num2);
+
+    for (int i = 0; i < num2->chunk_count; i++) {
+        printf("hgggi: %d (%d), %d (%d)\n", (num2->arr)[i], num2->chunk_count, (num1->arr)[i], num1->chunk_count); 
+    }
+
+    int *sum = malloc(num1->chunk_count * sizeof(*sum)); //keep big variables on heap for more storage
+
+    if (sum == NULL) {
+        printf("\n\nOut of memory.");
+        exit(1); //find a better solution for when these things fail
+    }
+
+    Big_int *big = NULL;
+    Big_int *small = NULL;
+
+    printf("yoyoyo %d vs %d\n", (num1->arr)[num1->chunk_count -2], (num2->arr)[num2->chunk_count -2]);
+
+    if ((num1->arr)[num1->chunk_count -2] >= (num2->arr)[num2->chunk_count -2]) {
+        big = num1;
+        small = num2;
+    } else {
+        big = num2;
+        small = num1;
+        //sum->is_negative = 1; here or smt like that for negative numbers
+    }
+
+    printf("cro %d vs %d\n", (big->arr)[big->chunk_count -2], (small->arr)[small->chunk_count -2]);
+
+    int carry = 0;
+
+    for (int i =0; i < num1->chunk_count; i++) {
+        long long int temp_sum = 0; //use same thing for multiplication 
+        temp_sum = (big->arr)[i] - (small->arr)[i] - carry;
+        printf("%d vs %d vs %d vs %lld\n", (big->arr)[i], (small->arr)[i], carry, temp_sum);
+
+        if (temp_sum < 0) {
+            temp_sum += 1000000000;
+            carry = 1;
+        } else{
+            carry = 0;
+        }
+
+        printf("%d vs %d vs %d vs %lld\n", (big->arr)[i], (small->arr)[i], carry, temp_sum);
+
+        sum[i] = temp_sum;
+        printf("sum(%d) is %d | temp_sum %d | carry %d\n\n", i, sum[i], temp_sum, carry);
+    }
+
+    
 
     printf("sum: %d", sum[num1->chunk_count-1]);
     for (int i = num1->chunk_count-2; i >= 0; i--) {
