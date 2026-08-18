@@ -11,7 +11,7 @@ typedef struct {
     int *arr;
 } Big_int;
 
-char *get_line(int *len);
+char *get_line(int *len, int *neg);
 int *chunk_creation(int len, char *buffer,  int *nbr_chunk);
 Big_int *create(void);
 Big_int *add(Big_int *num1, Big_int *num2);

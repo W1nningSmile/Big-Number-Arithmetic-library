@@ -14,7 +14,7 @@ int main() {
 void test() {
     Big_int *num = create();
 
-    num->buffer = get_line(&(num->len));
+    num->buffer = get_line(&(num->len), &(num->is_negative));
      //standard int can only have a max digit count of 9 for a number with only 9s in it 
 
     int *arr = chunk_creation(num->len, num->buffer, &(num->chunk_count));
@@ -25,19 +25,22 @@ void test2() {
 
     Big_int *num = create();
 
-    num->buffer = get_line(&(num->len));
+    num->buffer  = get_line(&(num->len), &(num->is_negative));
      //standard int can only have a max digit count of 9 for a number with only 9s in it 
 
     num->arr = chunk_creation(num->len, num->buffer, &num->chunk_count);
 
     Big_int *num2 = create();
 
-    num2->buffer = get_line(&(num2->len));
+    num2->buffer = get_line(&(num2->len), &(num2->is_negative));
      //standard int can only have a max digit count of 9 for a number with only 9s in it 
+
 
     num2->arr = chunk_creation(num2->len, num2->buffer, &num2->chunk_count);
 
     printf("here\n");
+    printf("neg2: %d\n", num2->is_negative);
+    printf("neg1: %d\n", num->is_negative);
     sub(num, num2);
     printf("\n");
 
