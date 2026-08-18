@@ -3,6 +3,7 @@
 ## Current Issues
 - [ ] Test the addition function for edge cases and optimise
 - [ ] Clean up and optimise current memory usage
+- [ ] Rework the logic of the sub function to make it simpler and more efficient
 
 ## Fixed
 - [x] Seperate the chunk converter into its own functiona and put it into func.c/func.h
