@@ -22,11 +22,12 @@ Addition is done one chunk at a time with manual carry handling.
 
 
 ## Future implementation
-  - [ ] Implementation of subtraction, multiplication, division, exponential and factorial
+  - [ ] Implementation of subtraction, multiplication, division
   - [x] Transitioning form strings to digital arrays representation for efficiency
   - [ ] Optimisation memory usage, speed and performance
   - [ ] Add the option to use floating point numbers
-
+  - [ ] Make the dynamic memory part of the code safer
+  
 ## Challenges
   - Alligning numbers with different lengths and decimal places
   - Balancing memory usage, safety and speed while manipulating big integer
